@@ -1,0 +1,116 @@
+Count,MeanCountPerMl,CleaningType,TimeAfterCleaning,Replicate
+6,120,Alcohol,0,R1
+34,680,Alcohol,0,R2
+221,7370,Alcohol,0,R3
+36,720,Alcohol,0,R4
+0,0,Alcohol,0,R5
+20,400,Alcohol,1,R1
+18,360,Alcohol,1,R2
+0,0,Alcohol,1,R3
+69,5520,Alcohol,1,R3
+0,0,Alcohol,1,R4
+5,100,Alcohol,1,R5
+5,100,Alcohol,2,R1
+9,180,Alcohol,2,R2
+3,60,Alcohol,2,R3
+4,80,Alcohol,2,R4
+6,120,Alcohol,2,R5
+2,40,Alcohol,4,R1
+2,40,Alcohol,4,R2
+2,40,Alcohol,4,R3
+10,200,Alcohol,4,R4
+11,220,Alcohol,4,R5
+0,0,Alcohol,8,R1
+0,0,Alcohol,8,R2
+0,0,Alcohol,8,R3
+2,40,Alcohol,8,R4
+10,200,Alcohol,8,R5
+6,NA,Alcohol,24,R1
+5,NA,Alcohol,24,R2
+11,NA,Alcohol,24,R3
+6,NA,Alcohol,24,R4
+15,NA,Alcohol,24,R5
+65,1300,Control,0,R1
+89,1780,Control,0,R2
+36,720,Control,0,R3
+72,1440,Control,0,R4
+35,700,Control,0,R5
+48,960,Control,1,R1
+34,680,Control,1,R2
+69,1380,Control,2,R1
+77,1540,Control,2,R2
+52,1040,Control,2,R3
+29,580,Control,2,R4
+31,620,Control,2,R5
+18,360,Control,4,R1
+24,480,Control,4,R2
+7,140,Control,4,R3
+6,120,Control,4,R4
+38,760,Control,4,R5
+43,3440,Control,8,R1
+0,0,Control,8,R2
+12,240,Control,8,R3
+23,460,Control,8,R4
+27,540,Control,8,R5
+12,NA,Control,24,R1
+21,NA,Control,24,R2
+23,NA,Control,24,R3
+10,NA,Control,24,R5
+1,20,Detergent,0,R1
+6,120,Detergent,0,R2
+0,0,Detergent,0,R3
+0,0,Detergent,0,R4
+7,140,Detergent,0,R5
+176,9630,Detergent,1,R2
+48,10500,Detergent,1,R2
+40,800,Detergent,1,R3
+232,12700,Detergent,1,R4
+41,8970,Detergent,1,R4
+29,580,Detergent,1,R5
+21,420,Detergent,2,R1
+50,10900,Detergent,2,R1
+7,140,Detergent,2,R2
+182,9960,Detergent,2,R3
+247,8230,Detergent,2,R4
+47,10300,Detergent,2,R4
+169,16000,Detergent,2,R5
+47,17800,Detergent,2,R5
+2,40,Detergent,4,R1
+2,40,Detergent,4,R2
+1,20,Detergent,4,R3
+2,40,Detergent,4,R4
+3,60,Detergent,8,R1
+5,100,Detergent,8,R2
+0,0,Detergent,8,R3
+0,0,Detergent,8,R4
+0,0,Detergent,8,R5
+14,NA,Detergent,24,R1
+5,NA,Detergent,24,R2
+9,NA,Detergent,24,R3
+6,NA,Detergent,24,R5
+313,57100,Distilled Water,0,R1
+68,49600,Distilled Water,0,R1
+1,20,Distilled Water,0,R2
+180,9850,Distilled Water,0,R3
+56,12300,Distilled Water,0,R3
+23,460,Distilled Water,0,R4
+185,33800,Distilled Water,0,R5
+47,34300,Distilled Water,0,R5
+229,12500,Distilled Water,1,R1
+214,39100,Distilled Water,1,R2
+211,7030,Distilled Water,1,R3
+67,8930,Distilled Water,1,R3
+172,9410,Distilled Water,1,R5
+60,8000,Distilled Water,1,R5
+48,18200,Distilled Water,2,R1
+43,5730,Distilled Water,2,R2
+38,8320,Distilled Water,2,R3
+59,22300,Distilled Water,2,R4
+43,31400,Distilled Water,8,R1
+197,3940,Distilled Water,8,R4
+144,2880,Distilled Water,8,R5
+192,NA,Distilled Water,24,R1
+26,NA,Distilled Water,24,R2
+23,NA,Distilled Water,24,R3
+9,NA,Distilled Water,24,R4
+30,NA,Distilled Water,24,R5

@@ -1,0 +1,7 @@
+Bogusz 2013 contains the detergent based cleaning data over 4 months (once per month)
+120 surfaces (30 rooms, 4 surfaces per room: left and right bed rails, beside locker and overbed table). They use detergent Tuffie wipes
+
+Stewart 2014 is the 2013 experiment repeated with electrolysed water.
+
+
+allCleanDataStephanie is the amalgamation of the results for both studies. It's cbased on her categories: no growth 0/cm2, scanty growth >2.5cfu/cm2, low growth >12/cm2, medium growth >26/cm2 and high growth >40/cm2. These numbers might not be right, but they're an approximation from memory (on 12th of August 2020). Data in the file is faithfully transcribed though.
