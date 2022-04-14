@@ -61,11 +61,11 @@ def deterministic_run_NONOISE(parameters):#precision,initial_contamination,r,C,d
     time_space = np.linspace(0,tmax,precision+1)
     sim=odeint(ode_model,initial_contamination,time_space,args=(parameters["r"],parameters["C"],parameters["d"],parameters["g"]))
     #num_at_0=sim[int(precision*0.1/50.0)]
-    num_at_1=sim[int(precision*1/50.0)]
-    num_at_2=sim[int(precision*2/50.0)]
-    num_at_4=sim[int(precision*4/50.0)]
-    num_at_8=sim[int(precision*8/50.0)]
-    num_at_24=sim[int(precision*24/50.0)]
+    num_at_1=sim[int(precision*1/tmax)]
+    num_at_2=sim[int(precision*2/tmax)]
+    num_at_4=sim[int(precision*4/tmax)]
+    num_at_8=sim[int(precision*8/tmax)]
+    num_at_24=sim[int(precision*24/tmax)]
     return{"Contamination":[num_at_1,num_at_2,num_at_4,num_at_8,num_at_24]}
 
 def deterministic_run(parameters):#precision,initial_contamination,r,C,d,g):
@@ -74,11 +74,11 @@ def deterministic_run(parameters):#precision,initial_contamination,r,C,d,g):
     time_space = np.linspace(0,tmax,precision+1)
     sim=odeint(ode_model,initial_contamination,time_space,args=(parameters["r"],parameters["C"],parameters["d"],parameters["g"]))
     #num_at_0=sim[int(precision*0.1/50.0)]
-    num_at_1=sim[int(precision*1/50.0)]
-    num_at_2=sim[int(precision*2/50.0)]
-    num_at_4=sim[int(precision*4/50.0)]
-    num_at_8=sim[int(precision*8/50.0)]
-    num_at_24=sim[int(precision*24/50.0)]
+    num_at_1=sim[int(precision*1/tmax)]
+    num_at_2=sim[int(precision*2/tmax)]
+    num_at_4=sim[int(precision*4/tmax)]
+    num_at_8=sim[int(precision*8/tmax)]
+    num_at_24=sim[int(precision*24/tmax)]
     return{"Contamination":[num_at_1,num_at_2,num_at_4,num_at_8,num_at_24]+ sigma*np.random.randn(5)}
 
 # def f(y, t0, theta1, theta2):
@@ -118,42 +118,111 @@ parameter_prior.get_parameter_names()
 
 
 #Noisey model
-sigma=0.02
-acceptor = pyabc.StochasticAcceptor()
-kernel = pyabc.IndependentNormalKernel(var=sigma**2)
-eps = pyabc.Temperature()
+# sigma=0.02
+# acceptor = pyabc.StochasticAcceptor()
+# kernel = pyabc.IndependentNormalKernel(var=sigma**2)
+# eps = pyabc.Temperature()
 
-abc = pyabc.ABCSMC(deterministic_run, parameter_prior, kernel, eps=eps, acceptor=acceptor,population_size=100)
-abc.new(db_path,{"Contamination": measurement_data}) #This distance model assumes the name of the predicited and confirmed are the same
-history_acceptor = abc.run(max_nr_populations=10,minimum_epsilon=10)
+# abc = pyabc.ABCSMC(deterministic_run, parameter_prior, kernel, eps=eps, acceptor=acceptor,population_size=100)
+# abc.new(db_path,{"Contamination": measurement_data}) #This distance model assumes the name of the predicited and confirmed are the same
+# history_acceptor = abc.run(max_nr_populations=10,minimum_epsilon=10)
 
 
 #No Noise
-# abc = ABCSMC(models=deterministic_run_NONOISE,
-#               parameter_priors=parameter_prior,
-#               distance_function=Distance,
-#               population_size=50,
-#               transitions=LocalTransition(k_fraction=.5),
-#               eps=MedianEpsilon(500, median_multiplier=0.7))
+abc = ABCSMC(models=deterministic_run_NONOISE,
+              parameter_priors=parameter_prior,
+              distance_function=Distance,
+              population_size=50,
+              transitions=LocalTransition(k_fraction=.5),
+              eps=MedianEpsilon(500, median_multiplier=0.7))
 
-# abc.new(db_path, {"Contamination": measurement_data,"sd":s})
-# history_acceptor = abc.run(minimum_epsilon=12, max_nr_populations=10)
+abc.new(db_path, {"Contamination": measurement_data,"sd":s})
+history = abc.run(minimum_epsilon=12, max_nr_populations=10)
 
-
-pyabc.visualization.plot_histogram_1d(history_acceptor,x="r")
-pyabc.visualization.plot_histogram_1d(history_acceptor,x="C")
-pyabc.visualization.plot_histogram_1d(history_acceptor,x="d")
-pyabc.visualization.plot_histogram_1d(history_acceptor,x="g")
-
-pyabc.visualization.plot_sample_numbers(history_acceptor)
 
 from pyabc.visualization import plot_kde_matrix
 
-df, w = history_acceptor.get_distribution(m=0)
-#plot_kde_matrix(df, w);
-df.hist(color='k', alpha=0.5, bins=25)
+df, w = history.get_distribution(m=0)
+plot_kde_matrix(df, w);
+
+# pyabc.visualization.plot_sample_numbers(history_acceptor)
+
+# from pyabc.visualization import plot_kde_matrix
+
+# df, w = history_acceptor.get_distribution(m=0)
+# #plot_kde_matrix(df, w);
+# df.hist(color='k', alpha=0.5, bins=25)
 
 df.describe()
+
+# See convergence of the distance function
+pyabc.visualization.plot_distance_convergence(history)
+
+# See convergence of the kernel width
+fig, ax = plt.subplots()
+for t in range(history.max_t + 1):
+    df, w = history.get_distribution(m=0, t=t)
+    pyabc.visualization.plot_kde_1d(
+        df,
+        w,
+        xmin=0,
+        xmax=1,
+        x="lam",
+        xname=r"$\lambda$",
+        ax=ax,
+        label=f"PDF t={t}",
+    )
+#Add a vertical line at lambda=0.49 +- 0.32 to 0.72 
+#This is the experimental value predicted in King et al. 2020 with Kalanne
+ax.axvline(0.49, color="k", linestyle="dashed")
+ax.legend();
+
+#Plot some trajectories
+
+import pandas as pd
+import operator
+
+initial_contamination=59
+measurement_data = np.array([59,19,5,5,2,9])
+s=np.array([30,26,2.3,4.67,4.33,4.27])
+precision=5000
+
+
+measurement_times = np.array([0,1,2,4,8,24])
+
+P=deterministic_run({"r":df["r"].mean(),"C":df["C"].mean(),"d":df["d"].mean(),"g":df["g"].mean()})
+Pmin=deterministic_run({'r':df["r"].min(),"C":df["C"].min(),"d":df["d"].min(),"g":df["g"].min()})
+Pmax=deterministic_run({'r':df["r"].max(),"C":df["C"].max(),"d":df["d"].max(),"g":df["g"].max()})
+
+# create a vector of values between 0 and 5
+x = np.linspace(0, 24, 6)
+
+#Define new sd just for plotting to avoid SD value at 0
+
+
+#Plot errobars of experimental data
+plt.errorbar(measurement_times,measurement_data,yerr=s,fmt='o', color='black',label='Experimental data')
+
+#Plot the model prediction
+plt.plot(x,P["Contamination"],label="Model prediction",color='blue')
+
+#Plot confidence intervals around the model prediction
+plt.fill_between(x,Pmin["Contamination"],Pmax["Contamination"],alpha=0.2,color='blue')
+
+
+
+#plt.fill_between(x, np.array(map(operator.sub, P["Contamination"], Pmin["Contamination"])), np.array(map(operator.add, P["Contamination"], Pmax["Contamination"])), color='b', alpha=.1)
+plt.xlim(-1,6)
+plt.ylabel("$\mu g$ recovered from finger \n after n contacts")
+plt.xlabel("Number of contacts")
+plt.legend(loc="upper left")
+
+
+#save the plot
+#plt.savefig("../Images/abc_prediction.png", dpi=600)
+
+plt.show()
+
 
 # fig = plt.figure(figsize=(10,8))
 # for t in range(history_acceptor.max_t+1):

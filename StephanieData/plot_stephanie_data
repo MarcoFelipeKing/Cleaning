@@ -1,0 +1,10 @@
+pacman::p_load(dplyr,ggplot2,hrbrthemes,tidyr)
+getwd()
+df <- read.table("StephanieData/allCleanDataStephanie.txt",header=TRUE)
+
+df%>%
+ggplot(aes(x=Time,y=value,color=Cleaning))+
+# geom_point(alpha=0.5)+
+stat_summary(fun = "median", size = 2, geom = "point")+
+facet_grid(~Cleaning)
+

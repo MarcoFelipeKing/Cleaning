@@ -51,11 +51,11 @@ deterministic_run<-function(precision,initial_contamination,parameters){
 #parameters=c(r,C,d,g,l)
 sim<- ode(initial_contamination, time_space, ode_model, parameters, method = "radau",atol = 1e-4, rtol = 1e-4)
 #num_at_0=sim[int(precision*0.1/50.0)]
-num_at_1=sim[(precision*1/50.0),2]
-num_at_2=sim[(precision*2/50.0),2]
-num_at_4=sim[(precision*4/50.0),2]
-num_at_8=sim[(precision*8/50.0),2]
-num_at_24=sim[(precision*24/50.0),2]
+num_at_1=sim[(precision*1/tmax),2]
+num_at_2=sim[(precision*2/tmax),2]
+num_at_4=sim[(precision*4/tmax),2]
+num_at_8=sim[(precision*8/tmax),2]
+num_at_24=sim[(precision*24/tmax),2]
 
 
 return(cbind(num_at_1,num_at_2,num_at_4,num_at_8,num_at_24))
