@@ -1,4 +1,4 @@
-README
+# README
 
 This is the cleaning git readme. Each sub-folder contains a README of its own. But for brevity, they are pasted in here.
 
@@ -8,7 +8,7 @@ Find mean and standard deviation of stephanie's data based on cleaning method.
 Fit ODEs to Stephanie's data to find parameters for the PAMCODE
 
 ##########
-#StephanieData
+# StephanieData
 
 
 Bogusz 2013 contains the detergent based cleaning data over 4 months (once per month)
@@ -20,7 +20,7 @@ Stewart 2014 is the 2013 experiment repeated with electrolysed water.
 allCleanDataStephanie is the amalgamation of the results for both studies. It's cbased on her categories: no growth 0/cm2, scanty growth >2.5cfu/cm2, low growth >12/cm2, medium growth >26/cm2 and high growth >40/cm2. These numbers might not be right, but they're an approximation from memory (on 12th of August 2020). Data in the file is faithfully transcribed though.
 
 ##########
-#LabData
+# LabData
 
 Inoculated (3*3cm) surfaces with S. aureus. Allowed to dry for 60 min.
 Cleaned with either Disinfectant wipe (Tuffie), detergent wipe (Tuffie), distilled water wipe (Tuffie) or no cleaning=control
@@ -29,10 +29,10 @@ Swabbed every hour for 8h then at 24h.
 
 
 ##########
-#CODE
+# CODE
 
 ######## ABC ###########
-#Update 12th August
+# Update 12th August
 
 ODE parameters for the Alcohol curve are in parameter_sample_Alcohol_1K.csv. These were obtained using the pyABC_Cleaning.py code.
 So technically we can load these values directly into the PAM_Cleaning_Curves.R code instead of the random values we have currently.
