@@ -165,7 +165,7 @@ while len(parameter_sample) < sample_size:
     
 	euclidean_distance=0
     
-	delta = 250
+	delta = 100
     
 	# Learning from data for detergent
 	for surface in range(4):
@@ -230,8 +230,12 @@ for i in range(len(parameter_sample)):
 	posterior_g_di.append(parameter_sample[i][5])
 	posterior_l.append(parameter_sample[i][6])
 
+# Plot histograms for each prarameter: r, C, m_de, g_de, m_di, g_di and l
+
+
+
 # We plot the posteriors
-f, ax = plt.subplots(3,2)
+f, ax = plt.subplots(3,3)
 
 ax[0,0].set_title('Histogram for r')
 ax[0,0].hist(posterior_r)
@@ -255,7 +259,7 @@ ax[2,0].set_title('Histogram for lambda')
 ax[2,0].hist(posterior_l)
 
 plt.show()
-plt.close('all')
+
 
 
 
