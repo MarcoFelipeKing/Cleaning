@@ -261,6 +261,57 @@ ax[2,0].hist(posterior_l)
 plt.show()
 
 
+# Plot some individual trajectories using the posterior means 
+# Plot the detergent trajectories
+import pandas as pd
+import operator
+
+df = parameter_sample
+
+#plot some curves from the ODE model
+precision=5000
+tmax = 24
+time_space = np.linspace(0,tmax,precision+1)#precision+1?
+#args=(r,C,m,g,l)
+P=odeint(ode_model,initial_contamination,time_space,args=(df["r"].mean(),df["C"].mean(),df["d"].mean(),df["g"].mean(),df["l"].mean()))
+Pmin=odeint(ode_model,initial_contamination,time_space,args=(df["C"].quantile(0.05),df["r"].quantile(0.05),df["d"].quantile(0.05),df["g"].quantile(0.05)))
+Pmax=odeint(ode_model,initial_contamination,time_space,args=(df["C"].quantile(0.05),df["r"].quantile(0.95),df["d"].quantile(0.95),df["g"].quantile(0.95)))
+
+
+#Define new sd just for plotting to avoid SD value at 0
+s=np.array([20,26,2.3,4.67,4.33,4.27])
+measurement_data = np.array([59,19,5,5,2,9])
+
+#Plot errobars of experimental data
+x = np.array([0,2,4,8,12,24])
+plt.errorbar(x,measurement_data,yerr=s,fmt='o', color='black',label='Experimental data')
+
+#Plot the model prediction
+plt.plot(time_space,P,label="Model prediction",color='blue')
+
+#Plot confidence intervals around the model prediction
+
+precision=5000
+tmax = 25
+time_space = np.linspace(0,tmax,precision+1)
+
+plt.fill_between(time_space,np.concatenate(Pmin),np.concatenate(Pmax),alpha=0.2,color='blue')
+#plt.plot(time_space,Pmin,label="Model prediction",color='red')
+#plt.plot(time_space,Pmax,label="Model prediction",color='red')
+
+#plt.fill_between(x, np.array(map(operator.sub, P["Contamination"], Pmin["Contamination"])), np.array(map(operator.add, P["Contamination"], Pmax["Contamination"])), color='b', alpha=.1)
+plt.xlim(-1,26)
+plt.ylabel("CFU recovered from finger \n after t hours")
+#plt.yscale("log")
+plt.xlabel("Hours after hand hygiene")
+plt.legend(loc="upper right")
+#make y axis logarithmic
+
+
+#save the plot
+#plt.savefig("../Images/abc_prediction.png", dpi=600)
+
+plt.show()
 
 
 #posterior_l=np.array(posterior_l)
