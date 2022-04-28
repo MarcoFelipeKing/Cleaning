@@ -106,6 +106,11 @@ Count,MeanCountPerMl,CleaningType,TimeAfterCleaning,Replicate
 43,5730,Distilled Water,2,R2
 38,8320,Distilled Water,2,R3
 59,22300,Distilled Water,2,R4
+18,360,Distilled Water,4,R1
+24,480,Distilled Water,4,R2
+7,140,Distilled Water,4,R3
+6,120,Distilled Water,4,R4
+38,760,Distilled Water,4,R5
 43,31400,Distilled Water,8,R1
 197,3940,Distilled Water,8,R4
 144,2880,Distilled Water,8,R5

@@ -7,7 +7,8 @@ To do:
 Find mean and standard deviation of stephanie's data based on cleaning method.
 Fit ODEs to Stephanie's data to find parameters for the PAMCODE
 
-##########
+-----
+
 # StephanieData
 
 
