@@ -56,11 +56,11 @@ Count,MeanCountPerMl,CleaningType,TimeAfterCleaning,Replicate
 21,NA,Control,24,R2
 23,NA,Control,24,R3
 10,NA,Control,24,R5
-241,20,Detergent,0,R1
-186,120,Detergent,0,R2
-107,0,Detergent,0,R3
-284,0,Detergent,0,R4
-290,140,Detergent,0,R5
+1,20,Detergent,0,R1
+6,120,Detergent,0,R2
+0,0,Detergent,0,R3
+0,0,Detergent,0,R4
+7,140,Detergent,0,R5
 176,9630,Detergent,1,R2
 48,10500,Detergent,1,R2
 40,800,Detergent,1,R3
@@ -89,17 +89,17 @@ Count,MeanCountPerMl,CleaningType,TimeAfterCleaning,Replicate
 9,NA,Detergent,24,R3
 6,NA,Detergent,24,R5
 313,57100,Distilled Water,0,R1
-268,49600,Distilled Water,0,R1
-221,20,Distilled Water,0,R2
-280,9850,Distilled Water,0,R3
-256,12300,Distilled Water,0,R3
-223,460,Distilled Water,0,R4
-285,33800,Distilled Water,0,R5
-247,34300,Distilled Water,0,R5
+68,49600,Distilled Water,0,R1
+1,20,Distilled Water,0,R2
+180,9850,Distilled Water,0,R3
+56,12300,Distilled Water,0,R3
+23,460,Distilled Water,0,R4
+185,33800,Distilled Water,0,R5
+47,34300,Distilled Water,0,R5
 229,12500,Distilled Water,1,R1
 214,39100,Distilled Water,1,R2
 211,7030,Distilled Water,1,R3
-167,8930,Distilled Water,1,R3
+67,8930,Distilled Water,1,R3
 172,9410,Distilled Water,1,R5
 60,8000,Distilled Water,1,R5
 48,18200,Distilled Water,2,R1

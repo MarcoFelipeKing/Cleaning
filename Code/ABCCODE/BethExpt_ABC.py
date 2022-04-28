@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue May 23 15:31:53 2017
+Created on Tue May 23 15:31:53 2022
+Updated on Thurs April 28 2020
 
-@author: Jonty
+@author: MFK
 """
 import random
 import math
@@ -71,23 +72,23 @@ Distilled_SD=[[np.zeros((1,6)) for i in range(1)] for j in range(1)]
 # We store Detergent[Surface][Phase]
 
 # Detergent for the Locker. Phases 1,2,3. 
-Detergent_Means[0][0] = [59.4,18.7,5.4,5.4,2.4,8.6]
-Detergent_SD[0][0] = [91.8,26.2,2.30,4.67,4.34,4.28]
+Detergent_Means[0][0] = [221.6,94.3,96.25,1.75,1.6,8.5]
+Detergent_SD[0][0] = [76.4,86.9,89.4,0.5,2.3,4.04]
 # Detergent_Means[0][1] = [5.608333333,4.85,4.25,3.608333333,5.05,3.65,5.05,5.45]
 # Detergent_SD[0][1] = [2.777436282,2.989637275,3.051285766,3.032640915,2.940795107,2.989637275,2.940795107,2.796549598]
 # Detergent_Means[0][2] = [6.875,3.85,3.65,3.05,2.85,3.25,4.25,6.05]
 # Detergent_SD[0][2] = [4.264301495,3.024041598,2.989637275,2.796549598,2.698658671,2.876779809,3.051285766,2.441028613]
 
 # Detergent for Right BR
-Disinfectant_Means[0][0] = [96.0,94.3,96.2,1.75,1.6,8.5]
-Disinfectant_SD[0][0] = [87.0,87.0,89,0.5,2.3,4.04]
+Disinfectant_Means[0][0] = [59.4,18.7,5.4,5.4,2.4,8.6]
+Disinfectant_SD[0][0] = [91.8,26.2,2.30,4.67,4.34,4.28] 
 # Detergent_Means[1][1]  = [5.641666667,5.033333333,3.208333333,3.166666667,3.408333333,3.975,5.075,4.991666667]
 # Detergent_SD[1][1]  = [7.479267321,5.002499375,3.102071055,2.9871492,3.417311405,7.372391415,4.960751125,5.058238415]
 # Detergent_Means[1][2]  = [6.875,3.85,3.65,3.05,2.85,3.25,4.25,6.05]
 # Detergent_SD[1][2]  = [4.264301495,3.024041598,2.989637275,2.796549598,2.698658671,2.876779809,3.051285766,2.441028613]
 
-Distilled_Means[0][0] = [109.0,159.3,47,47.2,128,56]
-Distilled_SD[0][0] = [107,76.2,9,9,78,76]
+Distilled_Means[0][0] = [261.0,175.5,47,18.6,128,56]
+Distilled_SD[0][0] = [31.5,61.7,9.0,13.2,78.2,76.4]
 
 Control_Means[0][0] = [59.4,41,52,18.6,21,16.5]
 Control_SD[0][0] = [23.5,9.9,21.7,13.2,16.2,6.54]
@@ -162,23 +163,27 @@ precision=5000
 while len(parameter_sample) < sample_size:
 	# The prior distributions we use are m ~ U(10^(-5),1.0), C ~ U(2,15), r ~ U(10^(-5),1.0), g ~ U(10^(-5),1.0), l ~ U(10^(-5),1.0)
     # We begin by sampling from these distributions and simulating the process
-	trial_r = random.uniform(0.0001,1.0)
-	trial_C = random.uniform(2.0,120.0)
-	trial_l = random.uniform(0.0001,1.0)
+	trial_r = random.uniform(0.0001,20.0)
+	trial_C = random.uniform(100.0,420.0)
+	trial_l = random.uniform(0.0001,20.0)
 	
 	# m and g for detergent
-	trial_m_de = random.uniform(0.0001,1.0)
+	trial_m_de = random.uniform(0.0001,20.0)
 	trial_g_de = random.uniform(0.0001,1.0)
 	
 	# m and g for disinfectant
-	trial_m_di = random.uniform(0.0001,1.0)
-	trial_g_di = random.uniform(0.0001,1.0)
+	trial_m_di = random.uniform(0.0001,20.0)
+	trial_g_di = random.uniform(0.0001,20.0)
+
+	# m and g for distilled water
+	trial_m_dw = random.uniform(0.0001,20.0)
+	trial_g_dw = random.uniform(0.0001,20.0)
 	
 	total_trials+=1.0
     
 	euclidean_distance=0
     
-	delta = 5.0
+	delta = 100.0
     
 	# Learning from data for detergent
 	for surface in range(1):
@@ -200,10 +205,21 @@ while len(parameter_sample) < sample_size:
 			# experimental results, normalised by the sd of the data. delta is the threshold that the Euclidean distance
 			# must be less than for us to accept the trial parameters into our sample.
 			
-			euclidean_distance += Distance(one_run,Disinfectant_Means[surface][phase],Disinfectant_SD[surface][phase])
+			euclidean_distance += Distance(one_run,Disinfectant_Means[surface][phase],Distilled_Means[surface][phase])
+	
+	# Learning from data for distilled water
+	for surface in range(1):
+		for phase in range(1):
+			initial_contamination=Distilled_Means[surface][phase][0]
+			one_run = deterministic_run(precision,initial_contamination,trial_r,trial_C,trial_m_dw,trial_g_dw,trial_l)
+			# Now we find the Euclidean distance between the simulated output and the
+			# experimental results, normalised by the sd of the data. delta is the threshold that the Euclidean distance
+			# must be less than for us to accept the trial parameters into our sample.
+			
+			euclidean_distance += Distance(one_run,Distilled_Means[surface][phase],Distilled_Means[surface][phase])
 			
 	if euclidean_distance < delta:
-		parameter_sample.append([trial_r,trial_C,trial_m_de,trial_g_de,trial_m_di,trial_g_di,trial_l])
+		parameter_sample.append([trial_r,trial_C,trial_m_de,trial_g_de,trial_m_di,trial_g_di,trial_m_dw,trial_g_dw,trial_l])
 		distances.append(euclidean_distance)
 		accepted_trials+=1.0
 		print(accepted_trials)
@@ -219,6 +235,10 @@ while len(parameter_sample) < sample_size:
 		Posterior.write(",")
 		Posterior.write(str(trial_g_di))
 		Posterior.write(",")
+		Posterior.write(str(trial_m_dw))
+		Posterior.write(",")
+		Posterior.write(str(trial_g_dw))
+		Posterior.write(",")
 		Posterior.write(str(trial_l))
 		Posterior.write("\n")
 
@@ -232,6 +252,8 @@ posterior_m_de=[]
 posterior_g_de=[]
 posterior_m_di=[]
 posterior_g_di=[]
+posterior_m_dw=[]
+posterior_g_dw=[]
 posterior_l=[]
 
 for i in range(len(parameter_sample)):
@@ -241,9 +263,11 @@ for i in range(len(parameter_sample)):
 	posterior_g_de.append(parameter_sample[i][3])
 	posterior_m_di.append(parameter_sample[i][4])
 	posterior_g_di.append(parameter_sample[i][5])
-	posterior_l.append(parameter_sample[i][6])
+	posterior_m_dw.append(parameter_sample[i][6])
+	posterior_g_dw.append(parameter_sample[i][7])
+	posterior_l.append(parameter_sample[i][8])
 
-# Plot histograms for each prarameter: r, C, m_de, g_de, m_di, g_di and l
+# Plot histograms for each prarameter: r, C, m_de, g_de, m_di, g_di, m_ds, g_ds, and l
 
 
 
@@ -263,6 +287,12 @@ ax[1,1].set_title('Histogram for gamma-detergent')
 ax[1,1].hist(posterior_g_de)
 
 ax[1,0].set_title('Histogram for mu-disinfectant')
+ax[1,0].hist(posterior_m_di)
+
+ax[1,1].set_title('Histogram for gamma-disinfectant')
+ax[1,1].hist(posterior_g_di)
+
+ax[1,0].set_title('Histogram for mu-distilled-water')
 ax[1,0].hist(posterior_m_di)
 
 ax[1,1].set_title('Histogram for gamma-disinfectant')
