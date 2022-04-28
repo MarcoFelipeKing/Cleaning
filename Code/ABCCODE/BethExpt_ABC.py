@@ -272,43 +272,44 @@ for i in range(len(parameter_sample)):
 
 
 # We plot the posteriors
-f, ax = plt.subplots(3,3)
+# f, ax = plt.subplots(3,3)
+# 
+# ax[0,0].set_title('Histogram for r')
+# ax[0,0].hist(posterior_r)
+# 
+# ax[0,1].set_title('Histogram for C')
+# ax[0,1].hist(posterior_C)
+# 
+# ax[1,0].set_title('Histogram for mu-detergent')
+# ax[1,0].hist(posterior_m_de)
+# 
+# ax[1,1].set_title('Histogram for gamma-detergent')
+# ax[1,1].hist(posterior_g_de)
+# 
+# ax[1,0].set_title('Histogram for mu-disinfectant')
+# ax[1,0].hist(posterior_m_di)
+# 
+# ax[1,1].set_title('Histogram for gamma-disinfectant')
+# ax[1,1].hist(posterior_g_di)
+# 
+# ax[1,0].set_title('Histogram for mu-distilled-water')
+# ax[1,0].hist(posterior_m_di)
+# 
+# ax[1,1].set_title('Histogram for gamma-disinfectant')
+# ax[1,1].hist(posterior_g_di)
+# 
+# ax[2,0].set_title('Histogram for lambda')
+# ax[2,0].hist(posterior_l)
+# 
+# plt.show()
+# 
+# 
+# df = pd.DataFrame(parameter_sample)
+# sns.pairplot(df, diag_kind = 'kde',
+#              plot_kws = {'alpha': 0.6, 's': 80, 'edgecolor': 'k'},
+#              size = 4)
+# plt.show()
 
-ax[0,0].set_title('Histogram for r')
-ax[0,0].hist(posterior_r)
-
-ax[0,1].set_title('Histogram for C')
-ax[0,1].hist(posterior_C)
-
-ax[1,0].set_title('Histogram for mu-detergent')
-ax[1,0].hist(posterior_m_de)
-
-ax[1,1].set_title('Histogram for gamma-detergent')
-ax[1,1].hist(posterior_g_de)
-
-ax[1,0].set_title('Histogram for mu-disinfectant')
-ax[1,0].hist(posterior_m_di)
-
-ax[1,1].set_title('Histogram for gamma-disinfectant')
-ax[1,1].hist(posterior_g_di)
-
-ax[1,0].set_title('Histogram for mu-distilled-water')
-ax[1,0].hist(posterior_m_di)
-
-ax[1,1].set_title('Histogram for gamma-disinfectant')
-ax[1,1].hist(posterior_g_di)
-
-ax[2,0].set_title('Histogram for lambda')
-ax[2,0].hist(posterior_l)
-
-plt.show()
-
-
-df = pd.DataFrame(parameter_sample)
-sns.pairplot(df, diag_kind = 'kde',
-             plot_kws = {'alpha': 0.6, 's': 80, 'edgecolor': 'k'},
-             size = 4)
-plt.show()
 #posterior_l=np.array(posterior_l)
 #posterior_r=np.array(posterior_r)
 #posterior_C=np.array(posterior_C)
