@@ -30,7 +30,7 @@ def ode_model(contamination,t,r,C,m,g,l):
 	
 	Contamination = contamination;
 	
-	return(r*Contamination-m*math.exp(-g*t)*Contamination)
+	return(r*(1-Contamination/C)-m*math.exp(-g*t)*Contamination)
 
 def deterministic_run(precision,initial_contamination,r,C,m,g,l):
     tmax = 24
@@ -183,7 +183,7 @@ while len(parameter_sample) < sample_size:
     
 	euclidean_distance=0
     
-	delta = 100.0
+	delta = 10.0
     
 	# Learning from data for detergent
 	for surface in range(1):
@@ -274,28 +274,28 @@ for i in range(len(parameter_sample)):
 # We plot the posteriors
 f, ax = plt.subplots(3,3)
 
-ax[0,0].set_title('Histogram for r')
+ax[0,0].set_title('r')
 ax[0,0].hist(posterior_r)
 
-ax[0,1].set_title('Histogram for C')
+ax[0,1].set_title('C')
 ax[0,1].hist(posterior_C)
 
-ax[1,0].set_title('Histogram for mu-detergent')
+ax[1,0].set_title('mu-detergent')
 ax[1,0].hist(posterior_m_de)
 
-ax[1,1].set_title('Histogram for gamma-detergent')
+ax[1,1].set_title('gamma-detergent')
 ax[1,1].hist(posterior_g_de)
 
-ax[1,0].set_title('Histogram for mu-disinfectant')
+ax[1,0].set_title('mu-disinfectant')
 ax[1,0].hist(posterior_m_di)
 
-ax[1,1].set_title('Histogram for gamma-disinfectant')
+ax[1,1].set_title('gamma-disinfectant')
 ax[1,1].hist(posterior_g_di)
 
-ax[1,0].set_title('Histogram for mu-distilled-water')
+ax[1,0].set_title('mu-distilled-water')
 ax[1,0].hist(posterior_m_di)
 
-ax[1,1].set_title('Histogram for gamma-disinfectant')
+ax[1,1].set_title('gamma-disinfectant')
 ax[1,1].hist(posterior_g_di)
 
 ax[2,0].set_title('Histogram for lambda')
@@ -306,8 +306,8 @@ plt.show()
 
 df = pd.DataFrame(parameter_sample)
 sns.pairplot(df, diag_kind = 'kde',
-             plot_kws = {'alpha': 0.6, 's': 80, 'edgecolor': 'k'},
-             size = 4)
+             plot_kws = {'alpha': 0.4, 's': 80, 'edgecolor': 'k'},
+             size = 0.5)
 plt.show()
 #posterior_l=np.array(posterior_l)
 #posterior_r=np.array(posterior_r)
@@ -446,8 +446,8 @@ plt.show()
 #plt.close('all')
 
 ## We plot our 'best' 10 simulations versus the scatter plots of the data
-#tmax = 50
-#time_space = np.linspace(0,tmax,precision+1)
+tmax = 24
+time_space = np.linspace(0,tmax,5000+1)
 
 #fig, axs = plt.subplots(nrows=2, ncols=2, sharex=True)
 
@@ -477,10 +477,10 @@ plt.show()
 #ax_RightBR.set_xlim(-1,50)
 #ax_RightBR.set_title('Right Bedrail')
 
-#for phase in range(3):
-	#initial_contamination=Data_Means[1][phase][0]
-	#my_simulation=odeint(ode_model,initial_contamination,time_space,args=(r,C,m,g,l))
-	#ax_RightBR.plot(time_space,my_simulation)
+# for phase in range(1):
+initial_contamination=Detergent_Means[0][0][0]
+my_simulation=odeint(ode_model,initial_contamination,time_space,args=(parameter_sample[0][0],parameter_sample[0][1],parameter_sample[0][2],parameter_sample[0][3],parameter_sample[0][4]))
+ax_RightBR.plot(time_space,my_simulation)
 
 #ax_Table=axs[1,0]
 #ax_Table.errorbar([0,1,2,4,8,12,24,48],Data_Means[2][0],yerr=Data_SD[2][0], fmt='o', label='Phase 1')

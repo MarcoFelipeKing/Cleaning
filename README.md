@@ -33,7 +33,18 @@ Swabbed every hour for 8h then at 24h.
 # CODE
 
 ######## ABC ###########
-# Update 12th August
+# Update 28th April 2022
+
+Created a python code BethExpt_ABC.py to take into consideration all cleaning methods at once which means several parameters are in common and some are unique.
+
+- Common: Carrying capacity C, recontamination from the air l
+- Unique: Maximum effectiveness $m_di$ / $m_de$ / $m_dw$, decay due to cleaning $g_di$ / $g_de$ / $g_dw$ 
+
+Control hasn't been included as it doesn't seem to even start as high as the others even after cleaning - Something strange about it.
+
+Needs implementing in R/C++ as it's currently quite slow in python.
+
+# Update 12th August 2021
 
 ODE parameters for the Alcohol curve are in parameter_sample_Alcohol_1K.csv. These were obtained using the pyABC_Cleaning.py code.
 So technically we can load these values directly into the PAM_Cleaning_Curves.R code instead of the random values we have currently.
@@ -45,7 +56,6 @@ initial_contamtination=c(Contamination=59) #This is the initial value immediatel
 experimental_data= c(Contamination@time1,Contamination@time2,...,Contamination@time24)
 s=standard deviation
 
-To run the pyhon code, I recommend installing anaconda and using spyder. I've had no end of hassle with stand-along python installations.
 
 
 
