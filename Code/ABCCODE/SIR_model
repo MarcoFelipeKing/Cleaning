@@ -1,0 +1,57 @@
+#This codes solves the SIR model
+#The code is based on the following paper:
+#https://www.sciencedirect.com/science/article/pii/S0957417419301865
+#The code is written by:
+#
+#
+#
+
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.integrate as integrate
+import pandas as pd
+import seaborn as sns
+
+#Define the SIR ODE 
+def SIR_ODE(y, t, beta, gamma):
+    S, I, R = y
+    dSdt = -beta * S * I
+    dIdt = beta * S * I - gamma * I
+    dRdt = gamma * I
+    return dSdt, dIdt, dRdt
+
+#Set the initial conditions
+S0 = 1
+I0 = 0
+R0 = 0
+
+#Set the parameters
+beta = 0.5
+gamma = 0.1
+
+#Set the time interval
+t_start = 0
+t_end = 100
+t_inc = 0.01
+
+#Solve the ODE
+t = np.arange(t_start, t_end, t_inc)
+y0 = S0, I0, R0
+solution = integrate.odeint(SIR_ODE, y0, t, args=(beta, gamma))
+S, I, R = solution.T
+
+#Plot the results
+plt.figure(figsize=(10,10))
+plt.plot(t, S, 'b', label='Susceptible')
+plt.plot(t, I, 'r', label='Infected')
+plt.plot(t, R, 'g', label='Recovered')
+plt.legend(loc='best')
+plt.xlabel('Time')
+plt.ylabel('Number of people')
+plt.title('SIR Model')
+plt.show()
+
+
+
+
+
