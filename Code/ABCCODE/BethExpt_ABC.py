@@ -27,7 +27,7 @@ def Distance(x,y,sd):
 def ode_model(contamination,t,r,C,m,g):
 	
 	Contamination = contamination;
-	return(r/m-g*Contamination)
+	return(-r*m*Contamination**g*t)#return(-r*Contamination^g*t*m)
 	#return(r*(1-Contamination/C)-m*math.exp(-g*t)*Contamination)
 
 # Extract specific time-ppints from ODE
@@ -102,22 +102,22 @@ while len(parameter_sample) < sample_size:
 	# trial_l = random.uniform(0.0001,20.0)
 	
 	# m and g for detergent
-	trial_m_de = random.uniform(0.0001,200.0)
+	trial_m_de = random.uniform(2,4)
 	trial_g_de = random.uniform(0.0001,100.0)
 	
 	# m and g for disinfectant
-	trial_m_di = random.uniform(0.0001,200.0)
+	trial_m_di = random.uniform(2,4)
 	trial_g_di = random.uniform(0.0001,200.0)
 
 	# m and g for distilled water
-	trial_m_dw = random.uniform(0.0001,200.0)
+	trial_m_dw = random.uniform(2,4)
 	trial_g_dw = random.uniform(0.0001,200.0)
 	
 	total_trials+=1.0
     
 	euclidean_distance=0
     
-	delta = 500.0
+	delta = 50000.0
     
 	# Learning from data for detergent
 	for surface in range(1):
