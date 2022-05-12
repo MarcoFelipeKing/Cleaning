@@ -27,8 +27,7 @@ def Distance(x,y,sd):
 def ode_model(contamination,t,r,C,m,g):
 	
 	Contamination = contamination;
-	return(-r*m*Contamination**g*t)#return(-r*Contamination^g*t*m)
-	#return(r*(1-Contamination/C)-m*math.exp(-g*t)*Contamination)
+	return(r*(1-Contamination/C)*Contamination-m*math.exp(-g*t)*Contamination)
 
 # Extract specific time-ppints from ODE
 def deterministic_run(precision,initial_contamination,r,C,m,g):
@@ -94,30 +93,32 @@ distances=[]
 # Precision of the ode solver
 precision=5000
 
+#delta
+delta = 1000.0
+
 while len(parameter_sample) < sample_size:
 	# The prior distributions we use are m ~ U(10^(-5),1.0), C ~ U(2,15), r ~ U(10^(-5),1.0), g ~ U(10^(-5),1.0), l ~ U(10^(-5),1.0)
     # We begin by sampling from these distributions and simulating the process
-	trial_r = random.uniform(0.0001,20.0)
-	trial_C = random.uniform(100.0,300.0)
+	trial_r = random.uniform(0.001,200.0)
+	trial_C = random.uniform(100.0,400.0)
 	# trial_l = random.uniform(0.0001,20.0)
 	
 	# m and g for detergent
-	trial_m_de = random.uniform(2,4)
+	trial_m_de = random.uniform(0.01,50.0)
 	trial_g_de = random.uniform(0.0001,100.0)
 	
 	# m and g for disinfectant
-	trial_m_di = random.uniform(2,4)
+	trial_m_di = random.uniform(0.01,50.0)
 	trial_g_di = random.uniform(0.0001,200.0)
 
 	# m and g for distilled water
-	trial_m_dw = random.uniform(2,4)
+	trial_m_dw = random.uniform(0.01,50.0)
 	trial_g_dw = random.uniform(0.0001,200.0)
 	
 	total_trials+=1.0
     
 	euclidean_distance=0
     
-	delta = 50000.0
     
 	# Learning from data for detergent
 	for surface in range(1):

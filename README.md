@@ -8,6 +8,12 @@ Find mean and standard deviation of stephanie's data based on cleaning method.
 Fit ODEs to Stephanie's data to find parameters for the PAMCODE
 
 -----
+# Models to consider
+
+We currently consider logistic growth of the bacteria on the surface as well as the removal due to diminishing cleaning product effectiveness at rate g
+
+$y'=r(1-y/C)*y-m*exp(-g*t)*y$
+Michael Pelag 2021 suggest to use the CWH equation which looks like $d log(N/N0)/dt=kC^mt^{n-1}$ or similar
 
 # StephanieData
 
