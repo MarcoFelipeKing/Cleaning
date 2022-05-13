@@ -18,7 +18,7 @@ from sympy import ordered
 def Distance(x,y,sd):
     # computes the Euclidean distance between two lists of the same length, normalised by values at sd
     if len(x) == len(y):
-        return np.absolute(sum([(((x[i]-y[i])/sd[i])) for i in range(len(x))]))
+        return np.absolute(sum([(((np.log(x[i])-np.log(y[i]))/sd[i])) for i in range(len(x))]))
     else:
         return 'lists not the same length'
 
@@ -94,30 +94,30 @@ distances=[]
 precision=5000
 
 #delta
-delta = 400.0
+delta = 10.0
 
 #create function to test different parameters in deterministic_run
 # def test_parameters(parameters):
 
 
-while len(parameter_sample) <= sample_size:
+while len(parameter_sample) < sample_size:
 	# The prior distributions we use are m ~ U(10^(-5),1.0), C ~ U(2,15), r ~ U(10^(-5),1.0), g ~ U(10^(-5),1.0), l ~ U(10^(-5),1.0)
     # We begin by sampling from these distributions and simulating the process
-	trial_r = random.uniform(0.001,200.0)
-	trial_C = random.uniform(100.0,300.0)
+	trial_r = random.uniform(0.001,1.0)
+	trial_C = random.uniform(1.0,1.0)
 	# trial_l = random.uniform(0.0001,20.0)
 	
 	# m and g for detergent
-	trial_m_de = random.uniform(0.01,50.0)
-	trial_g_de = random.uniform(0.0001,100.0)
+	trial_m_de = random.uniform(0.01,1.0)
+	trial_g_de = random.uniform(0.0001,1.0)
 	
 	# m and g for disinfectant
-	trial_m_di = random.uniform(0.01,50.0)
-	trial_g_di = random.uniform(0.0001,100.0)
+	trial_m_di = random.uniform(0.01,1.0)
+	trial_g_di = random.uniform(0.0001,1.0)
 
 	# m and g for distilled water
-	trial_m_dw = random.uniform(0.01,50.0)
-	trial_g_dw = random.uniform(0.0001,100.0)
+	trial_m_dw = random.uniform(0.01,1.0)
+	trial_g_dw = random.uniform(0.0001,1.0)
 	
 	total_trials+=1.0
     
@@ -133,8 +133,8 @@ while len(parameter_sample) <= sample_size:
 			# experimental results, normalised by the sd of the data. delta is the threshold that the Euclidean distance
 			# must be less than for us to accept the trial parameters into our sample.
 			#Calculate the absolute difference between one_run and Detergent_Means[surface][phase]
-			#euclidean_distance += np.sum(np.abs(np.subtract(one_run,Detergent_Means)))
-			euclidean_distance += Distance(one_run,Detergent_Means[surface][phase],Detergent_SD[surface][phase])#[1,1,1,1,1,1])#
+			#euclidean_distance += np.sum(np.abs(np.subtract(np.log(one_run),np.log(Detergent_Means))))
+			euclidean_distance += Distance(one_run,Detergent_Means[surface][phase],[1,1,1,1,1,1])#)#Detergent_SD[surface][phase]
 
 	# Learning from data for disinfectant
 	for surface in range(1):
@@ -144,8 +144,8 @@ while len(parameter_sample) <= sample_size:
 			# Now we find the Euclidean distance between the simulated output and the
 			# experimental results, normalised by the sd of the data. delta is the threshold that the Euclidean distance
 			# must be less than for us to accept the trial parameters into our sample.
-			#euclidean_distance += np.sum(np.abs(np.subtract(one_run,Disinfectant_Means)))
-			euclidean_distance += Distance(one_run,Disinfectant_Means[surface][phase],Disinfectant_SD[surface][phase])#[1,1,1,1,1,1])#,
+			#euclidean_distance += np.sum(np.abs(np.subtract(np.log(one_run),np.log(Disinfectant_Means))))
+			euclidean_distance += Distance(one_run,Disinfectant_Means[surface][phase],[1,1,1,1,1,1])#[1,1,1,1,1,1])#,Disinfectant_SD[surface][phase]
 	
 	# Learning from data for distilled water
 	for surface in range(1):
@@ -155,8 +155,8 @@ while len(parameter_sample) <= sample_size:
 			# Now we find the Euclidean distance between the simulated output and the
 			# experimental results, normalised by the sd of the data. delta is the threshold that the Euclidean distance
 			# must be less than for us to accept the trial parameters into our sample.
-			#euclidean_distance += np.sum(np.abs(np.subtract(one_run,Distilled_Means)))
-			euclidean_distance += Distance(one_run,Distilled_Means[surface][phase],Distilled_SD[surface][phase])#1,1,1,1,1,1]) #
+			#euclidean_distance += np.sum(np.abs(np.subtract(np.log(one_run),np.log(Distilled_Means))))
+			euclidean_distance += Distance(one_run,Distilled_Means[surface][phase],[1,1,1,1,1,1])#1,1,1,1,1,1]) #Distilled_SD[surface][phase]
 			
 	if euclidean_distance < delta:
 		parameter_sample.append([trial_r,trial_C,trial_m_de,trial_g_de,trial_m_di,trial_g_di,trial_m_dw,trial_g_dw])
