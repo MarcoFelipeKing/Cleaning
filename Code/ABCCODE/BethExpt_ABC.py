@@ -94,7 +94,7 @@ distances=[]
 precision=5000
 
 #delta
-delta = 10.0
+delta = 8.0
 
 #create function to test different parameters in deterministic_run
 # def test_parameters(parameters):
@@ -104,7 +104,7 @@ while len(parameter_sample) < sample_size:
 	# The prior distributions we use are m ~ U(10^(-5),1.0), C ~ U(2,15), r ~ U(10^(-5),1.0), g ~ U(10^(-5),1.0), l ~ U(10^(-5),1.0)
     # We begin by sampling from these distributions and simulating the process
 	trial_r = random.uniform(0.001,1.0)
-	trial_C = random.uniform(1.0,1.0)
+	trial_C = random.uniform(1.0,70.0)
 	# trial_l = random.uniform(0.0001,20.0)
 	
 	# m and g for detergent
