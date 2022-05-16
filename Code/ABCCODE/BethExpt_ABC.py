@@ -24,18 +24,18 @@ def Distance(x,y,sd):
 
 # ODE to calculate numerically
 
-def ode_model(contamination,t,r,C,m,g):
+def ode_model(contamination,t,r,C,m,g,die_off):
 	
 	Contamination = contamination;
-	return(r*(1-Contamination/C)*Contamination-m*math.exp(-g*t)*Contamination)
+	return(r*(1-Contamination/C)*Contamination-m*math.exp(-g*t)*Contamination-die_off*Contamination)
 
 # Extract specific time-ppints from ODE
-def deterministic_run(precision,initial_contamination,r,C,m,g):
+def deterministic_run(precision,initial_contamination,r,C,m,g,die_off):
     tmax = 24
             
     time_space = np.linspace(0,tmax,precision+1)
     
-    sim=odeint(ode_model,initial_contamination,time_space,args=(r,C,m,g))
+    sim=odeint(ode_model,initial_contamination,time_space,args=(r,C,m,g,die_off))
     
     num_at_0=initial_contamination
     num_at_1=sim[int(precision*1.0/tmax)]
@@ -94,7 +94,7 @@ distances=[]
 precision=5000
 
 #delta
-delta = 8.0
+delta = 20.0
 
 #create function to test different parameters in deterministic_run
 # def test_parameters(parameters):
@@ -105,7 +105,7 @@ while len(parameter_sample) < sample_size:
     # We begin by sampling from these distributions and simulating the process
 	trial_r = random.uniform(0.001,1.0)
 	trial_C = random.uniform(1.0,70.0)
-	# trial_l = random.uniform(0.0001,20.0)
+	trial_die_off = random.uniform(0.0001,20.0)
 	
 	# m and g for detergent
 	trial_m_de = random.uniform(0.01,1.0)
@@ -118,7 +118,11 @@ while len(parameter_sample) < sample_size:
 	# m and g for distilled water
 	trial_m_dw = random.uniform(0.01,1.0)
 	trial_g_dw = random.uniform(0.0001,1.0)
-	
+
+	# m and g for control 0
+	trial_m_c = 0.0
+	trial_g_c = 0.0
+
 	total_trials+=1.0
     
 	euclidean_distance=0
@@ -128,7 +132,7 @@ while len(parameter_sample) < sample_size:
 	for surface in range(1):
 		for phase in range(1):
 			initial_contamination=Detergent_Means[surface][phase][0]
-			one_run = deterministic_run(precision,initial_contamination,trial_r,trial_C,trial_m_de,trial_g_de)
+			one_run = deterministic_run(precision,initial_contamination,trial_r,trial_C,trial_m_de,trial_g_de,trial_die_off)
 			# Now we find the Euclidean distance between the simulated output and the
 			# experimental results, normalised by the sd of the data. delta is the threshold that the Euclidean distance
 			# must be less than for us to accept the trial parameters into our sample.
@@ -140,7 +144,7 @@ while len(parameter_sample) < sample_size:
 	for surface in range(1):
 		for phase in range(1):
 			initial_contamination=Disinfectant_Means[surface][phase][0]
-			one_run = deterministic_run(precision,initial_contamination,trial_r,trial_C,trial_m_di,trial_g_di)
+			one_run = deterministic_run(precision,initial_contamination,trial_r,trial_C,trial_m_di,trial_g_di,trial_die_off)
 			# Now we find the Euclidean distance between the simulated output and the
 			# experimental results, normalised by the sd of the data. delta is the threshold that the Euclidean distance
 			# must be less than for us to accept the trial parameters into our sample.
@@ -151,15 +155,26 @@ while len(parameter_sample) < sample_size:
 	for surface in range(1):
 		for phase in range(1):
 			initial_contamination=Distilled_Means[surface][phase][0]
-			one_run = deterministic_run(precision,initial_contamination,trial_r,trial_C,trial_m_dw,trial_g_dw)
+			one_run = deterministic_run(precision,initial_contamination,trial_r,trial_C,trial_m_dw,trial_g_dw,trial_die_off)
 			# Now we find the Euclidean distance between the simulated output and the
 			# experimental results, normalised by the sd of the data. delta is the threshold that the Euclidean distance
 			# must be less than for us to accept the trial parameters into our sample.
 			#euclidean_distance += np.sum(np.abs(np.subtract(np.log(one_run),np.log(Distilled_Means))))
 			euclidean_distance += Distance(one_run,Distilled_Means[surface][phase],[1,1,1,1,1,1])#1,1,1,1,1,1]) #Distilled_SD[surface][phase]
-			
+
+# Learning from data for control
+	for surface in range(1):
+		for phase in range(1):
+			initial_contamination=Control_Means[surface][phase][0]
+			one_run = deterministic_run(precision,initial_contamination,trial_r,trial_C,0.0,0.0,trial_die_off)
+			# Now we find the Euclidean distance between the simulated output and the
+			# experimental results, normalised by the sd of the data. delta is the threshold that the Euclidean distance
+			# must be less than for us to accept the trial parameters into our sample.
+			#euclidean_distance += np.sum(np.abs(np.subtract(np.log(one_run),np.log(Distilled_Means))))
+			euclidean_distance += Distance(one_run,Control_Means[surface][phase],[1,1,1,1,1,1])#1,1,1,1,1,1]) #Distilled_SD[surface][phase]
+
 	if euclidean_distance < delta:
-		parameter_sample.append([trial_r,trial_C,trial_m_de,trial_g_de,trial_m_di,trial_g_di,trial_m_dw,trial_g_dw])
+		parameter_sample.append([trial_r,trial_C,trial_m_de,trial_g_de,trial_m_di,trial_g_di,trial_m_dw,trial_g_dw,trial_die_off])
 		distances.append(euclidean_distance)
 		accepted_trials+=1.0
 		print(accepted_trials)
@@ -178,8 +193,8 @@ while len(parameter_sample) < sample_size:
 		Posterior.write(str(trial_m_dw))
 		Posterior.write(",")
 		Posterior.write(str(trial_g_dw))
-		# Posterior.write(",")
-		# Posterior.write(str(trial_l))
+		Posterior.write(",")
+		Posterior.write(str(trial_die_off))
 		Posterior.write("\n")
 
 #print(parameter_sample)
