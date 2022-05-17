@@ -94,7 +94,7 @@ distances=[]
 precision=5000
 
 #delta
-delta = 8.0
+delta = 6.0
 
 #create function to test different parameters in deterministic_run
 # def test_parameters(parameters):
