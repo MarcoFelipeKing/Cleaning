@@ -47,7 +47,7 @@ def SIR_HS_ODE(y,t,N,rho,P,chi,gamma,rho_FH,mu_H,rho_HF,sigma_H,a_H,a_F,mu_F,sig
     return([dSdt,dIdt,dRdt,dHSdt,dHIdt,dHRdt,dFdt])
 
 
-t = np.linspace(0, 10, 100)
+t = np.linspace(0,24, 600)
 rho=15.8 #inoculation per hour
 P=6.93E-5#6.93*10**-5 # infectivity parameter
 chi=1 # Transfer to self
@@ -63,7 +63,7 @@ rho_HF=rho_T*tau_HF #rate of pathogen deposit from hand to fomite
 q_H= 0.7#Hand cleaning efficacy (proportion)
 theta_H= 0#Rate of hand cleaning (days −1)
 sigma_H= q_H*theta_H#Effective hand cleaning rate
-a=1E-4#Shedding rate (pathogen hours −1 people −1)
+a=1E-3#Shedding rate (pathogen hours −1 people −1)
 phi_H=0.15 # pathogen deposited on H
 a_H=a*phi_H #rate pathogens are added to hands
 phi_F=1-phi_H # pathogen deposited on F
@@ -76,35 +76,35 @@ N=50
 
 # Integrate the SIR equations over the time grid, t using a stiff solver
 
-ret = odeint(SIR_HS_ODE, [48,2,0,0,0,0,20], t, args=(N,rho,P,chi,gamma,rho_FH,mu_H,rho_HF,sigma_H,a_H,a_F,mu_F,sigma_F))
-# S, I, R, HS, HI, HR, F = ret.T
+ret = odeint(SIR_HS_ODE, [3,1,0,0,1,0,0], t, args=(N,rho,P,chi,gamma,rho_FH,mu_H,rho_HF,sigma_H,a_H,a_F,mu_F,sigma_F))
+S, I, R, HS, HI, HR, F = ret.T
 
 
 # convert ret to a dataframe
 df = pd.DataFrame(ret, columns=['S', 'I', 'R', 'HS', 'HI', 'HR', 'F'])
 #save df to csv
-# df.to_csv('SIR_ODE_data.csv')
+df.to_csv('EITS_values.csv')
 
 #bind t to df
 df['t'] = t
 
 # plot S, I, R, HS, HI, HR, F against t from df using seaborn
-sns.set_style('darkgrid')
-sns.set_context('talk')
-#plot t against S using seaborn
-sns.lineplot(x='t', y='S', data=df)
-#plot t against I using seaborn
-sns.lineplot(x='t', y='I', data=df)
-#plot t against R using seaborn
-sns.lineplot(x='t', y='R', data=df)
-#plot t against HS using seaborn
-sns.lineplot(x='t', y='HS', data=df)
-#plot t against HI using seaborn
-sns.lineplot(x='t', y='HI', data=df)
-#plot t against HR using seaborn
-sns.lineplot(x='t', y='HR', data=df)
-#plot t against F using seaborn
-sns.lineplot(x='t', y='F', data=df)
+# sns.set_style('darkgrid')
+# sns.set_context('talk')
+# #plot t against S using seaborn
+# sns.lineplot(x='t', y='S', data=df)
+# #plot t against I using seaborn
+# sns.lineplot(x='t', y='I', data=df)
+# #plot t against R using seaborn
+# sns.lineplot(x='t', y='R', data=df)
+# #plot t against HS using seaborn
+# sns.lineplot(x='t', y='HS', data=df)
+# #plot t against HI using seaborn
+# sns.lineplot(x='t', y='HI', data=df)
+# #plot t against HR using seaborn
+# sns.lineplot(x='t', y='HR', data=df)
+# #plot t against F using seaborn
+# sns.lineplot(x='t', y='F', data=df)
 #plt.show()
 
 # fig, ax = plt.subplots(7, 1, sharex=True)
@@ -126,23 +126,23 @@ sns.lineplot(x='t', y='F', data=df)
 
 
 # # Plot the data on three separate curves for S(t), I(t) and R(t)
-# fig = plt.figure(facecolor='w')
-# ax = fig.add_subplot(111, facecolor='#dddddd', axisbelow=True)
-# ax.plot(t, S, 'b', alpha=0.5, lw=2, label='Susceptible')
-# ax.plot(t, I, 'r', alpha=0.5, lw=2, label='Infected')
-# ax.plot(t, R, 'g', alpha=0.5, lw=2, label='Recovered with immunity')
-# ax.plot(t, HS, 'k', alpha=0.5, lw=2, label='HS')
-# ax.plot(t, HI, 'orange', alpha=0.5, lw=2, label='HI')
-# ax.plot(t, HR, 'purple', alpha=0.5, lw=2, label='HR')
-# ax.plot(t, F, 'pink', alpha=0.5, lw=2, label='F')
-# ax.set_xlabel('Time /days')
-# ax.set_ylabel('Number (1000s)')
-# #ax.set_ylim(0,1.2)
-# ax.yaxis.set_tick_params(length=0)
-# ax.xaxis.set_tick_params(length=0)
-# ax.grid(b=True, which='major', c='w', lw=2, ls='-')
-# legend = ax.legend()
-# legend.get_frame().set_alpha(0.5)
-# for spine in ('top', 'right', 'bottom', 'left'):
-#     ax.spines[spine].set_visible(False)
-# plt.show()
+fig = plt.figure(facecolor='w')
+ax = fig.add_subplot(111, facecolor='#dddddd', axisbelow=True)
+ax.plot(t, S, 'b', alpha=0.5, lw=2, label='Susceptible')
+ax.plot(t, I, 'r', alpha=0.5, lw=2, label='Infected')
+ax.plot(t, R, 'g', alpha=0.5, lw=2, label='Recovered with immunity')
+ax.plot(t, HS, 'k', alpha=0.5, lw=2, label='HS')
+ax.plot(t, HI, 'orange', alpha=0.5, lw=2, label='HI')
+ax.plot(t, HR, 'purple', alpha=0.5, lw=2, label='HR')
+ax.plot(t, F, 'pink', alpha=0.5, lw=2, label='F')
+ax.set_xlabel('Time')
+ax.set_ylabel('Number')
+#ax.set_ylim(0,1.2)
+ax.yaxis.set_tick_params(length=0)
+ax.xaxis.set_tick_params(length=0)
+ax.grid(b=True, which='major', c='w', lw=2, ls='-')
+legend = ax.legend()
+legend.get_frame().set_alpha(0.5)
+for spine in ('top', 'right', 'bottom', 'left'):
+    ax.spines[spine].set_visible(False)
+plt.show()
