@@ -4,18 +4,18 @@
 
 #if("truncdist" %in% rownames(installed.packages())==FALSE){install.packages("truncdist"); require(truncdist)}else{require(truncdist)}
 #if("gsl" %in% rownames(installed.packages())==FALSE){install.packages("gsl"); require(gsl)}else{require(gsl)}
-if("tidyverse" %in% rownames(installed.packages())==FALSE){install.packages("tidyverse"); require(tidyverse)}else{require(tidyverse)}
-if("ggpubr" %in% rownames(installed.packages())==FALSE){install.packages("ggpubr"); require(ggpubr)}else{require(ggpubr)}
-#if("ramify" %in% rownames(installed.packages())==FALSE){install.packages("ramify"); require(ramify)}else{require(ramify)}
-#if("data.table" %in% rownames(installed.packages())==FALSE){install.packages("data.table"); require(data.table)}else{require(data.table)}
-#if("reshape2" %in% rownames(installed.packages())==FALSE){install.packages("reshape2"); require(reshape2)}else{require(reshape2)}
-if("deSolve" %in% rownames(installed.packages())==FALSE){install.packages("deSolve"); require(deSolve)}else{require(deSolve)}
-if("magrittr" %in% rownames(installed.packages())==FALSE){install.packages("magrittr"); require(magrittr)}else{require(magrittr)}
-if("mnormt" %in% rownames(installed.packages())==FALSE){install.packages("https://cran.r-project.org/bin/macosx/contrib/4.0/mnormt_1.5-7.tgz", repos=NULL, type="source"); require(mnormt)}else{require(mnormt)}
-if("EasyABC" %in% rownames(installed.packages())==FALSE){install.packages("EasyABC"); require(EasyABC)}else{require(EasyABC)}
-if("smfsb" %in% rownames(installed.packages())==FALSE){install.packages("smfsb"); require(smfb)}else{require(smfsb)}
+# if("tidyverse" %in% rownames(installed.packages())==FALSE){install.packages("tidyverse"); require(tidyverse)}else{require(tidyverse)}
+# if("ggpubr" %in% rownames(installed.packages())==FALSE){install.packages("ggpubr"); require(ggpubr)}else{require(ggpubr)}
+# #if("ramify" %in% rownames(installed.packages())==FALSE){install.packages("ramify"); require(ramify)}else{require(ramify)}
+# #if("data.table" %in% rownames(installed.packages())==FALSE){install.packages("data.table"); require(data.table)}else{require(data.table)}
+# #if("reshape2" %in% rownames(installed.packages())==FALSE){install.packages("reshape2"); require(reshape2)}else{require(reshape2)}
+# if("deSolve" %in% rownames(installed.packages())==FALSE){install.packages("deSolve"); require(deSolve)}else{require(deSolve)}
+# if("magrittr" %in% rownames(installed.packages())==FALSE){install.packages("magrittr"); require(magrittr)}else{require(magrittr)}
+# if("mnormt" %in% rownames(installed.packages())==FALSE){install.packages("https://cran.r-project.org/bin/macosx/contrib/4.0/mnormt_1.5-7.tgz", repos=NULL, type="source"); require(mnormt)}else{require(mnormt)}
+# if("EasyABC" %in% rownames(installed.packages())==FALSE){install.packages("EasyABC"); require(EasyABC)}else{require(EasyABC)}
+# if("smfsb" %in% rownames(installed.packages())==FALSE){install.packages("smfsb"); require(smfb)}else{require(smfsb)}
 
-
+pacman::p_load(dplyr,deSolve,ggpubr,hrbrthemes)
 Distance<-function(x,y,s){  # computes the Euclidean distance between two lists of the same length
   if (length(x) == length(y)){
     sqrt(sum(((x)-(y))/(s))^2)
@@ -66,7 +66,7 @@ return(cbind(num_at_1,num_at_2,num_at_4,num_at_8,num_at_24))
 initial_contamination=c(Contamination=59) #median 34
 experimental_data = c(19,5.4,5.4,2.4,8.6)#c(11.5,5,2,0,6)#
 s=c(26,2.3,4.7,4.3,4.3)
-sample_size = 5
+sample_size = 1000
 #parameter_sample <- c()
 parameter_sample<- matrix(data=NA,nrow=1,ncol=5)
 total_trials=0
