@@ -2,6 +2,7 @@
 # dC/dt=C*r*(1-C/Cap)-d*exp(-g*time_space)*C
 
 pacman::p_load(dplyr,deSolve,ggpubr,hrbrthemes)
+setwd("Code/ABCCODE/")
 
 # Check the system architecture before loading the compiled function
 if(Sys.info()["machine"]=="arm64"){
@@ -18,7 +19,7 @@ dynLoad <- function(dynlib){
 #ARM
 dynLoad("cleaning_ODE_arm64")
 #OR 
-dynLoad("cleaning_ODE_arm64")
+dynLoad("cleaning_ODE_X86")
 
 # ODE Compiled C version ----
 
