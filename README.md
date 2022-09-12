@@ -39,6 +39,13 @@ Swabbed every hour for 8h then at 24h.
 # CODE
 
 ######## ABC ###########
+# Update 9th Sept 2022
+
+Created a C function to run the ODE C'=C*r*(1-C/Cap)-m*exp(-g*t)*C
+Implemented in Cleaning_ABC_with_C_ODE.R
+
+Also have new ABC_SMC.txt file which is Polly's code for python.
+
 # Update 28th April 2022
 
 Created a python code BethExpt_ABC.py to take into consideration all cleaning methods at once which means several parameters are in common and some are unique.

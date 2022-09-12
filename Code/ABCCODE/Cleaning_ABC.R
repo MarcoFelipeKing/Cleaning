@@ -1,5 +1,4 @@
-
-
+# Cleaning code to fit ODE to Beth's data
 #author: MFK
 
 #if("truncdist" %in% rownames(installed.packages())==FALSE){install.packages("truncdist"); require(truncdist)}else{require(truncdist)}
@@ -16,16 +15,15 @@
 # if("smfsb" %in% rownames(installed.packages())==FALSE){install.packages("smfsb"); require(smfb)}else{require(smfsb)}
 
 pacman::p_load(dplyr,deSolve,ggpubr,hrbrthemes)
-Distance<-function(x,y,s){  # computes the Euclidean distance between two lists of the same length
+
+
+Distance<-function(x,y,s){  # Not used as slow
   if (length(x) == length(y)){
     sqrt(sum(((x)-(y))/(s))^2)
-              }
+  }
   else{
     print( 'lists not the same length')}
 }
-
-
-
 
 #parameters=c(r=runif(1),C=runif(1),d=runif(1),g=runif(1),l=runif(1))
 #time_space=seq(0, tmax, length.out = precision+1)
