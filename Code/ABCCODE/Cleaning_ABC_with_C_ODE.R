@@ -1,7 +1,7 @@
 # Cleaning ODE in C
 # dC/dt=C*r*(1-C/Cap)-d*exp(-g*time_space)*C
-
-pacman::p_load(dplyr,deSolve,ggpubr,hrbrthemes)
+# getwd()
+pacman::p_load(dplyr,deSolve,ggpubr,hrbrthemes,GGally,hrbrthemes,janitor)
 setwd("Code/ABCCODE/")
 
 # Check the system architecture before loading the compiled function

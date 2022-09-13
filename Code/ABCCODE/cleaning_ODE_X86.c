@@ -1,4 +1,4 @@
-/* file decay_ODE.c */
+/* file cleaning_ODE_X86.c */
 #include <R.h>
 static double parms[4];
 #define C parms[0]
@@ -20,4 +20,4 @@ void derivs (int *neq, double *t, double *y, double *ydot,
   // if (ip[0] <1) error("nout should be at least 1");
   ydot[0] = y[0]*(1 - y[0] / C) * r - d * exp(-g * *t) * y[0];
 }
-/* END file decayODE.c */
+/* END file cleaning_ODE_X86.c */
